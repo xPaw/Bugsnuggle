@@ -1,0 +1,76 @@
+.navbar-jumbo {
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+.jumbotron {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.bs-docs-footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	margin-top: 100px;
+	color: #767676;
+	text-align: center;
+	border-top: 1px solid #e5e5e5;
+}
+
+.label-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+}
+
+.panel-body > p {
+    margin-bottom: 0;
+}
+
+.panel-code + .panel-code {
+    margin-top: -21px;
+}
+
+.table pre {
+    white-space: pre-wrap;
+}
+
+.panel-code,
+.Code {
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+	line-height: 1.5rem;
+    font-size: 13px;
+}
+.Code {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.Code-yield {
+	width: 100%;
+}
+.Code-lineNumber {
+	padding: 0 .5rem 0 1.5rem;
+	text-align: right;
+	border-right: 1px solid rgba(0, 0, 0, 0.025);
+}
+.Code-lineNumber.is-selected {
+	background: #fcf5e3;
+}
+.Code-line {
+    margin: 0;
+	padding: 0;
+    padding-left: .5rem;
+	border: none;
+	background: 0 0;
+	font-family: Consolas,"Liberation Mono",Courier,monospace;
+	line-height: inherit;
+	word-wrap: normal;
+	overflow: visible;
+}
+.Code-line.is-selected {
+	background: #fdfaf2;
+}
+
+.Code-width {
+    width: 99%;
+}
