@@ -125,7 +125,7 @@ class Notification
 			
 			$Hash = md5( $Project[ 'id' ] . json_encode( $Event[ 'exceptions' ] ) );
 			
-			$CheckHash->execute( $Hash );
+			$CheckHash->execute( [ $Hash ] );
 			
 			if( $CheckHash->fetch() )
 			{
