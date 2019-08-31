@@ -16,7 +16,7 @@
     
     $EventID = $Event[ 'hash' ];
     $Date = $Event[ 'date' ];
-    $Event = json_decode( $Event[ 'event_json' ], true );
+    $Event = $RawPayload = json_decode( $Event[ 'event_json' ], true );
     
     switch( $Event[ 'severity' ] )
     {
@@ -151,8 +151,8 @@ foreach( $Event[ 'metaData' ] as $Name => $Data )
 }
 
 echo '<h3>Raw payload</h3><pre>';
-array_walk_recursive($Event, function(&$v) { $v = htmlspecialchars($v); });
-print_r( $Event );
+array_walk_recursive( $RawPayload, function(&$v) { $v = htmlspecialchars($v); } );
+print_r( $RawPayload );
 echo '</pre>';
 
 unset( $Metadata, $Event, $Name, $Data, $Key, $Value );
