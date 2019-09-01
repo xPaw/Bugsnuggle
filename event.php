@@ -40,6 +40,7 @@
     
     <title>Bugsnuggle</title>
     
+	<link rel="shortcut icon" href="favicon.ico">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/bootstrap-flat.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
