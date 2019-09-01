@@ -28,8 +28,6 @@ $Tables =
 'CREATE UNIQUE INDEX `project_id` ON `projects` (`id`)',
 'CREATE UNIQUE INDEX `project_key` ON `projects` (`api_key`)',
 
-'INSERT INTO `projects` VALUES (1, "066f5ad3590596f9aa8d601ea89af845", "Ayy lmao test project")',
-
 ];
 
 foreach( $Tables as $Table )
