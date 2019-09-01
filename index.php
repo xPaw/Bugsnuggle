@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex">
 
 	<title>Bugsnuggle</title>
 
@@ -49,7 +50,7 @@
 	{
 		$Events = $Database->query( 'SELECT `hash`, `event_json`, `projects`.`name`, `date` FROM `events` JOIN `projects` on `project_id` = `projects`.`id` GROUP BY `hash` ORDER BY `events`.`id` DESC' );
 	}
-	
+
 	$Events = $Events->fetchAll();
 
 	$DetailsQuery = $Database->prepare( 'SELECT COUNT(*) as `count` FROM `events` WHERE `hash` = ?' );
@@ -120,7 +121,7 @@
 	<footer class="bs-docs-footer" role="contentinfo">
 		<div class="container">
 			<p>Page rendered in <span class="text-success"><?=number_format( microtime( true ) - $_SERVER[ 'REQUEST_TIME_FLOAT' ], 5 );?></span> seconds.</p>
-			<p>Made by <a rel="author" href="https://xpaw.me">xPaw</a>. Code licensed under <a rel="license" href="https://github.com/xPaw/Bugsnuggle/blob/master/LICENSE" target="_blank">MIT</a> and is available on <a href="https://github.com/xPaw/Bugsnuggle">GitHub</a>.</p>
+			<p>Made by <a rel="author" href="https://xpaw.me">xPaw</a>. Code licensed under <a rel="license" href="https://github.com/xPaw/Bugsnuggle/blob/master/LICENSE">MIT</a> and is available on <a href="https://github.com/xPaw/Bugsnuggle">GitHub</a>.</p>
 			<p>Bugsnag notifier clients are © Bugsnag Inc.</p>
 		</div>
 	</footer>
