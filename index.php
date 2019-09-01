@@ -42,6 +42,11 @@
 
 	$DetailsQuery = $Database->prepare( 'SELECT COUNT(*) as `count` FROM `events` WHERE `hash` = ?' );
 
+	if( empty( $Events ) )
+	{
+		echo '<div class="alert alert-info">No errors have been collected yet. <a href="https://docs.bugsnag.com/platforms/">View Bugsnag documentation on how to setup error reporting in your application.</a></div>';
+	}
+
 	foreach( $Events as $Event )
 	{
 		$Project = $Event[ 'name' ];
