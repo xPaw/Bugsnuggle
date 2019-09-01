@@ -1,6 +1,26 @@
 <?php
 
-http_response_code( 400 );
+header( 'access-control-allow-headers: Origin, Content-Type, Accept, Authorization, User-Agent, Referer, X-Forwarded-For, Bugsnag-Api-Key, Bugsnag-Sent-At, Bugsnag-Payload-Version' );
+header( 'access-control-allow-methods: POST' );
+header( 'access-control-allow-origin: *' );
+
+$RequestMethod = $_SERVER[ 'REQUEST_METHOD' ] ?? '';
+
+if( $RequestMethod === 'OPTIONS' )
+{
+	http_response_code( 200 );
+
+	exit;
+}
+
+if( $RequestMethod !== 'POST' )
+{
+	http_response_code( 405 );
+
+	echo 'Please POST to this URL.';
+
+	exit;
+}
 
 $Notification = new Notification;
 
@@ -8,6 +28,12 @@ if( $Notification->Verify() && $Notification->Accept() )
 {
 	http_response_code( 200 );
 }
+else
+{
+	http_response_code( 400 );
+}
+
+echo $Notification->Message;
 
 class Notification
 {
@@ -25,6 +51,8 @@ class Notification
 		'development' => true,
 	];
 	
+	public $Message = 'OK';
+
 	public function Verify()
 	{
 		return
@@ -40,6 +68,7 @@ class Notification
 		
 		if( empty( $Payload ) )
 		{
+			$this->Message = 'Empty payload.';
 			return false;
 		}
 		
@@ -47,6 +76,7 @@ class Notification
 		
 		if( empty( $Payload[ 'apiKey' ] ) || empty( $Payload[ 'events' ] ) || !is_array( $Payload[ 'events' ] ) )
 		{
+			$this->Message = 'Bad events.';
 			return false;
 		}
 		
@@ -58,6 +88,7 @@ class Notification
 		
 		if( !$Project )
 		{
+			$this->Message = 'No project.';
 			return false;
 		}
 		
@@ -68,6 +99,7 @@ class Notification
 		{
 			if( empty( $Event[ 'exceptions' ] ) || !is_array( $Event[ 'exceptions' ] ) )
 			{
+				$this->Message = 'Bad exceptions.';
 				return false;
 			}
 			
@@ -81,6 +113,7 @@ class Notification
 					!is_array( $Event[ 'threads' ][ 'stacktrace' ] )
 				)
 				{
+					$this->Message = 'Bad threads';
 					return false;
 				}
 			}
@@ -89,20 +122,36 @@ class Notification
 			{
 				if( empty( $Exception[ 'errorClass' ] ) || empty( $Exception[ 'stacktrace' ] ) || !is_array( $Exception[ 'stacktrace' ] ) )
 				{
+					$this->Message = 'Bad error data.';
 					return false;
 				}
 				
 				foreach( $Exception[ 'stacktrace' ] as $Stacktrace )
 				{
-					if(
-						empty( $Stacktrace[ 'method' ] ) ||
-						!isset( $Stacktrace[ 'lineNumber' ] ) ||
-						!is_numeric( $Stacktrace[ 'lineNumber' ] )
-					)
+					if( isset( $Stacktrace[ 'lineNumber' ] ) && !is_numeric( $Stacktrace[ 'lineNumber' ] ) )
 					{
+						$this->Message = 'Bad line number.';
 						return false;
 					}
-					
+
+					if( isset( $Stacktrace[ 'columnNumber' ] ) && !is_numeric( $Stacktrace[ 'columnNumber' ] ) )
+					{
+						$this->Message = 'Bad column number.';
+						return false;
+					}
+
+					if( isset( $Stacktrace[ 'file' ] ) && !is_string( $Stacktrace[ 'file' ] ) )
+					{
+						$this->Message = 'Bad file.';
+						return false;
+					}
+
+					if( isset( $Stacktrace[ 'method' ] ) && !is_string( $Stacktrace[ 'method' ] ) )
+					{
+						$this->Message = 'Bad method.';
+						return false;
+					}
+
 					// TODO: validate code
 				}
 			}

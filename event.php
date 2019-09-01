@@ -79,8 +79,8 @@ foreach( $Event[ 'exceptions' ] as $Exception )
     foreach( $Exception[ 'stacktrace' ] as $Stack )
     {
         echo '
-        <div class="panel panel-' . ( $Stack[ 'inProject' ] ? 'default' : 'danger' ) . ' panel-code">
-            <div class="panel-heading">' . htmlspecialchars( empty( $Stack[ 'file' ] ) ? '<unknown>' : $Stack[ 'file' ] ) . ':<b>' . (int)$Stack[ 'lineNumber' ]. '</b> · <b>' . htmlspecialchars( $Stack[ 'method' ] ). '</b></div>
+        <div class="panel panel-' . ( ( $Stack[ 'inProject' ] ?? false ) ? 'default' : 'danger' ) . ' panel-code">
+            <div class="panel-heading">' . htmlspecialchars( empty( $Stack[ 'file' ] ) ? '<unknown>' : $Stack[ 'file' ] ) . ':<b>' . (int)$Stack[ 'lineNumber' ] . '</b>' . ( isset( $Stack[ 'columnNumber' ] ) ? ':' . (int)$Stack[ 'columnNumber' ] : '' ) . ' · <b>' . htmlspecialchars( $Stack[ 'method' ] ?? '<unknown>' ). '</b></div>
         ';
         
         if( !empty( $Stack[ 'code' ] ) )
