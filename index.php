@@ -37,7 +37,18 @@
 		$Delete->execute( [ $EventID ] );
 	}
 
-	$Events = $Database->query( 'SELECT `hash`, `event_json`, `projects`.`name`, `date` FROM `events` JOIN `projects` on `project_id` = `projects`.`id` GROUP BY `hash` ORDER BY `events`.`id` DESC' );
+	$ProjectID = (int)filter_input( INPUT_GET, 'project', FILTER_SANITIZE_NUMBER_INT );
+
+	if( $ProjectID > 0 )
+	{
+		$Events = $Database->prepare( 'SELECT `hash`, `event_json`, `date` FROM `events` WHERE `project_id` = ? GROUP BY `hash` ORDER BY `events`.`id` DESC' );
+		$Events->execute( [ $ProjectID ] );
+	}
+	else
+	{
+		$Events = $Database->query( 'SELECT `hash`, `event_json`, `projects`.`name`, `date` FROM `events` JOIN `projects` on `project_id` = `projects`.`id` GROUP BY `hash` ORDER BY `events`.`id` DESC' );
+	}
+	
 	$Events = $Events->fetchAll();
 
 	$DetailsQuery = $Database->prepare( 'SELECT COUNT(*) as `count` FROM `events` WHERE `hash` = ?' );
@@ -49,7 +60,7 @@
 
 	foreach( $Events as $Event )
 	{
-		$Project = $Event[ 'name' ];
+		$Project = $Event[ 'name' ] ?? null;
 		$EventID = $Event[ 'hash' ];
 		$Date = $Event[ 'date' ];
 		$Event = json_decode( $Event[ 'event_json' ], true );
@@ -82,7 +93,7 @@
 					<span class="label label-' . $LabelClass . '">' . ucfirst( $Event[ 'app' ][ 'releaseStage' ] ) . '</span>
 				</div>
 
-				' . htmlspecialchars( $Project ) . ' · <b>' . htmlspecialchars( $Exception[ 'errorClass' ] ) . '</b> · ' . htmlspecialchars( empty( $Event[ 'context' ] ) ? '' : $Event[ 'context' ] ) . '
+				' . ( $Project ? htmlspecialchars( $Project ) . ' · ' : '' ) . '<b>' . htmlspecialchars( $Exception[ 'errorClass' ] ) . '</b> · ' . htmlspecialchars( empty( $Event[ 'context' ] ) ? '' : $Event[ 'context' ] ) . '
 			</div>
 			<div class="panel-body">
 				<form action="index.php" method="post">

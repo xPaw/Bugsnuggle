@@ -125,6 +125,7 @@
 				</div>
 
 				<button class="btn btn-primary" type="submit" name="action" value="save" style="display:none">Save</button>
+				<a href="index.php?project=' . $Project[ 'id' ] . '" class="btn btn-primary">View errors</a>
 
 				</div>
 			</form>
